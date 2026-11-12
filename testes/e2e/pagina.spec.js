@@ -40,7 +40,7 @@ test("cartão da Mater sem demo nem código", async ({ page }) => {
 test("rótulos de estimativa visíveis", async ({ page }) => {
   await page.goto("/");
   const texto = await page.locator("body").innerText();
-  expect(texto).toContain("estimativa da dona");
+  expect(texto).toContain("estimativa da proprietária");
   expect(texto).toContain("30 min por falha");
   expect(texto).toContain("falhas plantadas");
 });
@@ -48,4 +48,12 @@ test("rótulos de estimativa visíveis", async ({ page }) => {
 test("site não oferece CV para baixar", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('a[href*="cv"], a[download]')).toHaveCount(0);
+});
+
+test("Mater descrita com linguagem profissional", async ({ page }) => {
+  await page.goto("/");
+  const cartao = page.locator("#projeto-mater");
+  await expect(cartao.locator("h3")).toHaveText("Site de pedidos e painel de gestão · Mater Bakery Box");
+  const texto = await page.locator("body").innerText();
+  expect(texto).not.toMatch(/painel da dona|da dona/);
 });

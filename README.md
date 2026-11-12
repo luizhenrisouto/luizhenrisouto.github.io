@@ -3,7 +3,7 @@
 Site pessoal de Luiz Henri Souto, QA Sênior que constrói ferramentas com IA. Mostra os projetos rodando, com números de relatórios reais, em português e inglês.
 
 - **Triagem de falhas de teste com IA**: os números (acerto contra o gabarito, falhas triadas, custo, horas) são lidos ao vivo do [relatório publicado](https://luizhenrisouto.github.io/triagem-de-falhas-ia/). Se a leitura falhar, a página usa `dados/reserva.json` e mostra a data dos dados.
-- **Site de pedidos e painel · Mater Bakery Box**: os números ficam em `dados/projetos.json`. A economia de ~4 h/semana é uma estimativa da dona (~30 min por pedido × 8 pedidos/semana) e aparece sempre com esse rótulo.
+- **Site de pedidos e painel de gestão · Mater Bakery Box**: os números ficam em `dados/projetos.json`. A economia de ~4 h/semana é uma estimativa da proprietária (~30 min por pedido × 8 pedidos/semana) e aparece sempre com esse rótulo.
 
 ## Como funciona
 
