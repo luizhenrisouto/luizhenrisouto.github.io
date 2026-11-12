@@ -1,0 +1,17 @@
+{
+  "name": "site-pessoal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portfólio de Luiz Henri Souto — QA que constrói ferramentas com IA",
+  "scripts": {
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "author": "Luiz Henri Souto",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "vitest": "^5.1.0"
+  }
+}

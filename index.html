@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luiz Henri Souto · QA</title>
+  <meta name="description" content="QA Sênior que constrói ferramentas com IA e coloca no ar: triagem de falhas de teste com IA e painel de pedidos de uma confeitaria real.">
+  <meta name="theme-color" content="#0a0d16">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0d16'/%3E%3Ccircle cx='9' cy='16' r='3' fill='%235b8cff'/%3E%3Ccircle cx='23' cy='16' r='4' fill='%233ddc97'/%3E%3Cpath d='M12 16h7' stroke='%235b8cff' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="pular" href="#projetos" data-i18n="pular">Pular para os projetos</a>
+
+  <header class="menu">
+    <div class="largura menu__linha">
+      <a class="marca" href="#topo">luiz.souto</a>
+      <nav class="menu__links" aria-label="Seções">
+        <a href="#projetos" data-i18n="menu.projetos">projetos</a>
+        <a href="#como-testo" data-i18n="menu.testo">como testo</a>
+        <a href="#trajetoria" data-i18n="menu.trajetoria">trajetória</a>
+        <a href="#ferramentas" data-i18n="menu.ferramentas">ferramentas</a>
+        <a href="#contato" data-i18n="menu.contato">contato</a>
+      </nav>
+      <div class="idioma" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lingua="pt" aria-pressed="true">PT</button>
+        <button type="button" data-lingua="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="topo" class="topo">
+      <div class="grade" aria-hidden="true"></div>
+      <div class="largura topo__conteudo">
+        <div class="topo__barra">
+          <span class="mono">pipeline: portfolio</span>
+          <span class="vivo"><span data-i18n="topo.status">1 projeto no ar e 1 em implantação</span></span>
+        </div>
+        <p class="topo__nome mono" data-i18n="topo.nome">Luiz Henri Souto, QA Sênior</p>
+        <h1 data-i18n="topo.titulo">QA que constrói ferramentas com IA. E coloca no ar.</h1>
+        <p class="topo__apoio" data-i18n="topo.apoio">15 anos testando software. Agora construo ferramentas com IA, coloco no ar e meço se funcionam.</p>
+
+        <ol class="pipeline" aria-label="Como eu trabalho">
+          <li class="etapa e1"><small class="mono">01</small><span data-i18n="etapa.ideia">ideia</span><em class="mono" data-i18n="etapa.ok">✓ ok</em></li>
+          <li class="liga l1" aria-hidden="true"></li>
+          <li class="etapa e2"><small class="mono">02</small><span data-i18n="etapa.build">build com IA</span><em class="mono" data-i18n="etapa.ok">✓ ok</em></li>
+          <li class="liga l2" aria-hidden="true"></li>
+          <li class="etapa e3"><small class="mono">03</small><span data-i18n="etapa.testes">testes</span><em class="mono">✓ <span data-num="testesPainel">165</span> + evals</em></li>
+          <li class="liga l3" aria-hidden="true"></li>
+          <li class="etapa e4"><small class="mono">04</small><span data-i18n="etapa.deploy">deploy</span><em class="mono" data-i18n="etapa.noar">✓ no ar</em></li>
+          <li class="liga l4" aria-hidden="true"></li>
+          <li class="etapa e5 etapa--impacto">
+            <small class="mono" data-i18n="etapa.impacto">05 impacto</small>
+            <strong>~<span data-num="horasMater">4</span> h<span data-i18n="etapa.porSemana">/semana</span></strong>
+            <em class="rotulo" data-i18n="rotulo.mater">estimativa da dona: ~30 min por pedido × 8 pedidos/semana</em>
+          </li>
+        </ol>
+
+        <div class="topo__acoes">
+          <a class="botao botao--cheio" href="#projetos" data-i18n="topo.verProjetos">Ver projetos</a>
+        </div>
+
+        <dl class="provas">
+          <div><dt data-i18n="prova.acerto">acerto da IA contra o gabarito</dt><dd data-num="acerto">100%</dd></div>
+          <div><dt data-i18n="prova.falhas">falhas de teste triadas pela IA</dt><dd data-num="falhas">24</dd></div>
+          <div><dt data-i18n="prova.custo">custo total de IA</dt><dd data-num="custo">US$ 0,00</dd></div>
+        </dl>
+        <p class="atualizado mono"><span data-i18n="prova.fonteReserva">triagem (suíte de demonstração), cópia de reserva com dados de</span> <span data-num="atualizado">12/11/2026</span></p>
+      </div>
+    </section>
+
+    <section id="projetos" class="secao">
+      <div class="largura">
+        <p class="secao__job mono">job: projetos</p>
+        <h2 data-i18n="projetos.titulo">O que eu construí, rodando</h2>
+        <p class="secao__intro" data-i18n="projetos.intro">Cada projeto abre no navegador, sem instalar nada. Os números vêm dos relatórios de cada um.</p>
+
+        <div class="projetos">
+          <article class="projeto" id="projeto-triagem">
+            <header class="projeto__cabeca">
+              <h3 data-i18n="triagem.nome">Triagem de falhas de teste com IA</h3>
+              <span class="selo selo--ok mono" data-i18n="selo.noar">no ar</span>
+            </header>
+            <p data-i18n="triagem.desc">Quando a suíte de testes falha no GitHub Actions, um fluxo no n8n manda cada falha para a IA (Gemini ou Claude), que diz se é bug do produto, teste instável ou teste quebrado. O fluxo abre ou atualiza a issue e publica um relatório com acerto, tempo e custo.</p>
+            <ol class="mini" aria-hidden="true">
+              <li class="etapa"><span data-i18n="triagem.e1">falha no CI</span></li><li class="liga"></li>
+              <li class="etapa"><span data-i18n="triagem.e2">IA classifica</span></li><li class="liga"></li>
+              <li class="etapa"><span data-i18n="triagem.e3">issue aberta</span></li><li class="liga"></li>
+              <li class="etapa etapa--impacto"><span data-i18n="triagem.e4">relatório</span></li>
+            </ol>
+            <dl class="numeros">
+              <div><dt data-i18n="triagem.n1">acerto vs gabarito</dt><dd data-num="acerto">100%</dd></div>
+              <div><dt data-i18n="triagem.n2">execuções</dt><dd data-num="execucoes">6</dd></div>
+              <div><dt data-i18n="triagem.n3">horas economizadas</dt><dd><span data-num="horasTriagem">1,9</span> h</dd></div>
+            </dl>
+            <p class="rotulo" data-i18n="rotulo.triagem">Horas: estimativa de 30 min por falha, menos o tempo da automação. A suíte é de demonstração, com falhas plantadas e gabarito.</p>
+            <p class="projeto__links">
+              <a href="https://luizhenrisouto.github.io/triagem-de-falhas-ia/" data-i18n="triagem.vivo">ver relatório ao vivo</a>
+              <a href="https://github.com/luizhenrisouto/triagem-de-falhas-ia" data-i18n="link.codigo">código no GitHub</a>
+            </p>
+            <p class="tecnologias mono">n8n · Gemini · Claude · GitHub Actions · Playwright · Vitest</p>
+          </article>
+
+          <article class="projeto" id="projeto-mater">
+            <header class="projeto__cabeca">
+              <h3 data-i18n="mater.nome">Site de pedidos e painel · Mater Bakery Box</h3>
+              <span class="selo selo--em-curso mono" data-i18n="selo.implantacao">em implantação</span>
+            </header>
+            <p data-i18n="mater.desc">Para uma confeitaria de verdade em Porto Alegre, construí o site de pedidos e o painel da dona. No site, a cliente escolhe a caixa no catálogo, vê as datas com vaga, preenche o endereço pelo CEP com a taxa do bairro e paga pelo Mercado Pago, no Pix ou no cartão. No painel, a dona acompanha pagamentos, estoque, capacidade do dia e lista de produção. Se o pedido chega pelo WhatsApp, ela cola a conversa e a IA (Claude) monta o pedido. Pagamento duplicado vira estorno automático.</p>
+            <ol class="mini" aria-hidden="true">
+              <li class="etapa"><span data-i18n="mater.e1">catálogo</span></li><li class="liga"></li>
+              <li class="etapa"><span data-i18n="mater.e2">checkout</span></li><li class="liga"></li>
+              <li class="etapa"><span data-i18n="mater.e3">Mercado Pago</span></li><li class="liga"></li>
+              <li class="etapa etapa--impacto"><span data-i18n="mater.e4">produção</span></li>
+            </ol>
+            <dl class="numeros">
+              <div><dt data-i18n="mater.n1">testes automatizados</dt><dd data-num="testesPainel">165</dd></div>
+              <div><dt data-i18n="mater.n2">economia por semana</dt><dd>~<span data-num="horasMater">4</span> h</dd></div>
+              <div><dt data-i18n="mater.n3">pedidos por semana</dt><dd>8</dd></div>
+            </dl>
+            <p class="rotulo" data-i18n="rotulo.mater">estimativa da dona: ~30 min por pedido × 8 pedidos/semana</p>
+            <p class="projeto__links"><span class="em-breve" data-i18n="mater.breve">demonstração em breve</span></p>
+            <p class="tecnologias mono">HTML · JavaScript · Supabase · Postgres · Deno · React · Claude · Mercado Pago · Vitest · Playwright</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-testo" class="secao">
+      <div class="largura">
+        <p class="secao__job mono">job: como-testo</p>
+        <h2 data-i18n="testo.titulo">Cada tipo de teste, com uma prova</h2>
+        <p class="secao__intro" data-i18n="testo.intro">Construir com IA não dispensa testar. Os projetos acima foram feitos assim.</p>
+        <ul class="testes">
+          <li><strong data-i18n="testo.t1">Avaliação de IA (evals)</strong><span data-i18n="testo.p1">A triagem compara cada resposta da IA com um gabarito e publica o acerto.</span></li>
+          <li><strong data-i18n="testo.t2">E2E web</strong><span data-i18n="testo.p2">As telas do painel são testadas de ponta a ponta, do pedido à produção.</span></li>
+          <li><strong data-i18n="testo.t3">API e contrato</strong><span data-i18n="testo.p3">No pagamento, um aviso duplicado vira estorno, e um pedido cancelado devolve o dinheiro.</span></li>
+          <li><strong data-i18n="testo.t4">Banco de dados</strong><span data-i18n="testo.p4">Regras de estoque, capacidade do dia e prazo testadas direto no Postgres.</span></li>
+          <li><strong data-i18n="testo.t5">Desempenho, mobile, BDD e eventos</strong><span data-i18n="testo.p5">JMeter, Appium, Gherkin e Kafka na experiência profissional.</span></li>
+          <li><strong data-i18n="testo.t6">IA no fluxo de QA</strong><span data-i18n="testo.p6">Agentes e skills próprias no Claude Code para analisar histórias, gerar cenários e acelerar a automação.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="trajetoria" class="secao">
+      <div class="largura">
+        <p class="secao__job mono">job: trajetoria</p>
+        <h2 data-i18n="traj.titulo">15 anos de qualidade de software</h2>
+        <ol class="linha-tempo">
+          <li><span class="mono quando">2027</span><div><strong data-i18n="traj.s0">Tecnólogo em Inteligência Artificial · FIAP</strong><p data-i18n="traj.d0">Matriculado. Início em fev/2027, conclusão prevista em dez/2028.</p></div></li>
+          <li><span class="mono quando" data-i18n="traj.hoje">hoje</span><div><strong data-i18n="traj.s1">Operadora de saúde · Especialista em testes automatizados</strong><p data-i18n="traj.d1">Estratégia e automação de um portal web com mais de 10 microsserviços: E2E com Playwright e TypeScript, API e contrato com Rest Assured, desempenho com JMeter, fluxos assíncronos com Kafka e webhooks, migração de login para SSO e evidências para decisões de go/no-go. IA no fluxo de QA com agentes e skills.</p></div></li>
+          <li><span class="mono quando">2020+</span><div><strong data-i18n="traj.s2">Seguradora · Especialista em testes automatizados</strong><p data-i18n="traj.d2">Automação web e de API em .NET e C# com SpecFlow, no Azure DevOps.</p></div></li>
+          <li><span class="mono quando">2020+</span><div><strong data-i18n="traj.s3">Grande varejista, centro de excelência · Especialista em testes automatizados</strong><p data-i18n="traj.d3">Automação compartilhada entre todos os squads e marcas do grupo: web, API e mobile em Java.</p></div></li>
+          <li><span class="mono quando">2020+</span><div><strong data-i18n="traj.s4">Meios de pagamento · Analista de testes automatizados</strong><p data-i18n="traj.d4">Web, API e mobile com quality gate, integração com ERP e arquitetura orientada a eventos (Kafka).</p></div></li>
+          <li><span class="mono quando">2018</span><div><strong data-i18n="traj.s5">Consultoria · Marketplace de varejo</strong><p data-i18n="traj.d5">Testes funcionais, regressão e automação em Java e Ruby, rodando no Jenkins.</p></div></li>
+          <li><span class="mono quando">2012</span><div><strong data-i18n="traj.s6">Setor de energia · Analista de testes</strong><p data-i18n="traj.d6">Planejamento e execução de casos de teste e registro de defeitos.</p></div></li>
+          <li><span class="mono quando">2011</span><div><strong data-i18n="traj.s7">Desenvolvedor Java</strong><p data-i18n="traj.d7">Portal de autoatendimento e plataforma de ensino a distância de uma universidade.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="ferramentas" class="secao">
+      <div class="largura">
+        <p class="secao__job mono">job: ferramentas</p>
+        <h2 data-i18n="ferr.titulo">Ferramentas</h2>
+        <div class="ferramentas">
+          <div>
+            <h3 data-i18n="ferr.projetos">Nos meus projetos</h3>
+            <ul class="chips">
+              <li>n8n</li><li>Gemini</li><li>Claude</li><li>Claude Code</li><li>Supabase</li><li>Postgres</li><li>Playwright</li><li>Vitest</li><li>GitHub Actions</li><li>TypeScript</li>
+            </ul>
+          </div>
+          <div>
+            <h3 data-i18n="ferr.trabalho">No trabalho</h3>
+            <ul class="chips chips--sobrio">
+              <li>Playwright</li><li>Java · Rest Assured</li><li>C# · SpecFlow</li><li>Selenium</li><li>Cypress</li><li>Appium</li><li>JMeter</li><li>Kafka</li><li>Azure DevOps</li><li>Jenkins</li><li>Cucumber</li><li>Ruby</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="secao contato">
+      <div class="largura">
+        <p class="secao__job mono">job: contato</p>
+        <h2 data-i18n="contato.titulo">Vamos conversar</h2>
+        <p class="secao__intro" data-i18n="contato.intro">Procuro um time que use IA para resolver problemas de negócio de verdade.</p>
+        <p class="contato__links">
+          <a class="botao botao--cheio" href="https://www.linkedin.com/in/luizhenrisouto/">LinkedIn</a>
+          <a class="botao" href="https://github.com/luizhenrisouto">GitHub</a>
+          <a class="botao" href="mailto:luizhenrisouto@gmail.com">luizhenrisouto@gmail.com</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape largura mono">
+    <span data-i18n="rodape">Site estático, testado com Playwright e Vitest.</span>
+  </footer>
+</body>
+</html>

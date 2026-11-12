@@ -1,0 +1,4 @@
+{
+  "mater": { "horasSemana": 4, "minPorPedido": 30, "pedidosSemana": 8, "situacao": "estimativa" },
+  "painel": { "testes": 165 }
+}
