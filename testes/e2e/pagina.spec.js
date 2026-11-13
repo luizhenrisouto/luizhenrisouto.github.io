@@ -79,7 +79,7 @@ test("experiência em casos, por importância, sem anos", async ({ page }) => {
   await expect(casos.first()).toHaveClass(/caso--destaque/);
   await expect(casos.first()).toContainText("Operadora de saúde");
   await expect(casos.first()).toContainText("atual");
-  await expect(secao.locator(".casos__rodape")).toContainText("FIAP");
+  await expect(secao.locator(".casos__rodape")).toHaveCount(0);
 });
 
 test("brilho segue o mouse dentro dos cartões", async ({ page }) => {
