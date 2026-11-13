@@ -187,3 +187,16 @@ test("sem o endereço do servidor configurado, a análise ao vivo fica desligada
   await expect(page.locator("#lab-restantes")).toHaveText("análise ao vivo em breve");
   expect(chamadas).toEqual([]);
 });
+
+test("botões de exemplo alinhados numa grade de mesma largura", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto("/");
+  const caixas = await page.locator(".lab-exemplo").evaluateAll((bs) => bs.map((b) => b.getBoundingClientRect().toJSON()));
+  expect(caixas).toHaveLength(4);
+  const larguras = new Set(caixas.map((c) => Math.round(c.width)));
+  expect(larguras.size).toBe(1);
+  expect(Math.round(caixas[0].left)).toBe(Math.round(caixas[2].left));
+  expect(Math.round(caixas[1].left)).toBe(Math.round(caixas[3].left));
+  expect(Math.round(caixas[0].top)).toBe(Math.round(caixas[1].top));
+  expect(Math.round(caixas[0].height)).toBe(Math.round(caixas[1].height));
+});
