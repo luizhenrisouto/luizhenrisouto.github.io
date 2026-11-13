@@ -72,4 +72,25 @@ async function iniciar() {
   }
 }
 
+// Brilho que segue o mouse dentro dos cartões. Em telas de toque não há mouse, então nada muda.
+const CARTOES = ".projeto, .caso, .testes li";
+const PEQUENOS = ".botao, .chips li";
+export function ativarBrilho(doc) {
+  doc.querySelectorAll(CARTOES).forEach((el) => el.classList.add("brilho"));
+  doc.querySelectorAll(PEQUENOS).forEach((el) => el.classList.add("brilho", "brilho--pequeno"));
+  doc.addEventListener(
+    "pointermove",
+    (e) => {
+      if (e.pointerType !== "mouse") return;
+      const el = e.target instanceof Element ? e.target.closest(".brilho") : null;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${Math.round(e.clientX - r.left)}px`);
+      el.style.setProperty("--my", `${Math.round(e.clientY - r.top)}px`);
+    },
+    { passive: true },
+  );
+}
+
+ativarBrilho(document);
 iniciar();

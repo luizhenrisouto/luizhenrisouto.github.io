@@ -69,3 +69,29 @@ test("ferramentas do trabalho mostram a stack completa", async ({ page }) => {
   const chips = await page.locator(".chips--sobrio li").allInnerTexts();
   for (const f of ["TypeScript", "Reqnroll", "MongoDB", "SQL Server", "Rest Assured", "WireMock", "Postman", "Allure", "Kiro"]) expect(chips).toContain(f);
 });
+
+test("experiência em casos, por importância, sem anos", async ({ page }) => {
+  await page.goto("/");
+  const secao = page.locator("#trajetoria");
+  expect(await secao.innerText()).not.toMatch(/\b(19|20)\d{2}\b/);
+  const casos = secao.locator(".caso");
+  await expect(casos).toHaveCount(5);
+  await expect(casos.first()).toHaveClass(/caso--destaque/);
+  await expect(casos.first()).toContainText("Operadora de saúde");
+  await expect(casos.first()).toContainText("atual");
+  await expect(secao.locator(".casos__rodape")).toContainText("FIAP");
+});
+
+test("brilho segue o mouse dentro dos cartões", async ({ page }) => {
+  await page.goto("/");
+  const cartao = page.locator("#projeto-triagem");
+  await cartao.scrollIntoViewIfNeeded();
+  const caixa = await cartao.boundingBox();
+  await page.mouse.move(caixa.x + 40, caixa.y + 30);
+  await page.mouse.move(caixa.x + 60, caixa.y + 50);
+  await expect(cartao).toHaveClass(/brilho/);
+  const mx = await cartao.evaluate((e) => e.style.getPropertyValue("--mx"));
+  expect(mx).toBe("60px");
+  const casos = await page.locator("#trajetoria .caso.brilho").count();
+  expect(casos).toBe(5);
+});
