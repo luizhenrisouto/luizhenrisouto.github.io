@@ -1,0 +1,12 @@
+# Cloudflare Worker da triagem ao vivo (passo a passo em worker/README.md).
+# Segredos (digitados pelo dono, nunca neste arquivo): npx wrangler secret put GEMINI_API_KEY / SAL
+name = "triagem-ao-vivo"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+ORIGENS = "https://luizhenrisouto.github.io,http://127.0.0.1:4180"
+
+[[kv_namespaces]]
+binding = "LIMITES"
+id = "PREENCHER_NO_DEPLOY"
