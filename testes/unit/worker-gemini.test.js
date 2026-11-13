@@ -35,6 +35,16 @@ describe("montarPedido", () => {
   });
 });
 
+describe("língua da resposta", () => {
+  test("a língua também vai na mensagem do usuário, pedindo todos os campos nela", () => {
+    const en = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "en" });
+    const pt = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "pt" });
+    expect(en.systemInstruction.parts[0].text).toContain("Write every field in English, even though the evidence and these instructions are in Portuguese.");
+    expect(en.contents[0].parts[0].text.trim().endsWith("Answer language: English. Write every field in English.")).toBe(true);
+    expect(pt.contents[0].parts[0].text.trim().endsWith("Língua da resposta: português do Brasil, com acentuação correta.")).toBe(true);
+  });
+});
+
 describe("lerResposta", () => {
   test("aceita uma triagem válida", () => {
     expect(lerResposta(respostaCom(JSON.stringify(TRIAGEM)))).toEqual({ triagem: TRIAGEM });
@@ -123,5 +133,19 @@ describe("chamarGemini", () => {
     const p = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "pt" });
     expect(await chamarGemini({ chave: "k", pedido: p, buscar, limiteMs: 5000, esperaMs: 1 })).toEqual({ erro: "ia_indisponivel" });
     expect(n).toBe(1);
+  });
+
+  test("com detalhar = true (só no script local), mostra também a mensagem do Google", async () => {
+    const avisos = [];
+    const original = console.warn;
+    console.warn = (...a) => avisos.push(a.join(" "));
+    try {
+      const corpo = { error: { status: "INVALID_ARGUMENT", message: "API key not valid. Please pass a valid API key." } };
+      const p = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "pt" });
+      await chamarGemini({ chave: "k", pedido: p, buscar: async () => new Response(JSON.stringify(corpo), { status: 400 }), limiteMs: 1000, detalhar: true });
+    } finally {
+      console.warn = original;
+    }
+    expect(avisos).toEqual(["gemini: HTTP 400 INVALID_ARGUMENT — API key not valid. Please pass a valid API key."]);
   });
 });

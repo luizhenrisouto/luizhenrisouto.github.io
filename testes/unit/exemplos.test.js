@@ -54,4 +54,22 @@ describe("exemplos da triagem ao vivo", () => {
     const { buscar } = geminiFalso(() => (n++ === 5 ? "categoria_inventada" : "bug_produto"));
     await expect(gerarExemplos({ falhas: FALHAS, chave: "k", buscar, agora: () => new Date() })).rejects.toThrow(/inválida|indisponível/);
   });
+
+  test("gerarExemplos tira espaços e quebras de linha da chave", async () => {
+    const chaves = [];
+    const { buscar } = geminiFalso(() => "bug_produto");
+    const espiao = async (url, op) => { chaves.push(op.headers["x-goog-api-key"]); return buscar(url, op); };
+    await gerarExemplos({ falhas: FALHAS, chave: "  CHAVE-123\r\n", buscar: espiao, agora: () => new Date() });
+    expect(new Set(chaves)).toEqual(new Set(["CHAVE-123"]));
+  });
+
+  test("descreverChave mostra tamanho e formato, nunca a chave", async () => {
+    const { descreverChave } = await import("../../scripts/gerar-exemplos-triagem.mjs");
+    const chave = "AIzaSyA-segredo-12345678901234567890123";
+    const d = descreverChave(chave);
+    expect(chave).toHaveLength(39);
+    expect(d).toBe("chave com 39 caracteres, começa como chave do Google (AIza…)");
+    expect(d).not.toContain("segredo");
+    expect(descreverChave("xyz")).toBe("chave com 3 caracteres, NÃO começa com AIza");
+  });
 });

@@ -48,7 +48,14 @@ Quando houver dúvida entre duas categorias, escolha a mais provável e explique
 - \`confianca\`: número entre 0 e 1.
 - \`resumo\`: uma frase que serviria de título de um registro de defeito.`;
 
-const FIM_LINGUA = { pt: "Responda em português do Brasil.", en: "Answer in English." };
+const FIM_LINGUA = {
+  pt: "Responda em português do Brasil.",
+  en: "Answer in English. Write every field in English, even though the evidence and these instructions are in Portuguese.",
+};
+const LINGUA_NO_PEDIDO = {
+  pt: "Língua da resposta: português do Brasil, com acentuação correta.",
+  en: "Answer language: English. Write every field in English.",
+};
 
 /** Corpo do POST generateContent para triar o texto colado. */
 export function montarPedido({ erro, codigo, lingua }) {
@@ -58,6 +65,8 @@ export function montarPedido({ erro, codigo, lingua }) {
     "",
     "Trecho do código do teste:",
     codigo && codigo.trim() ? codigo : "(não informado)",
+    "",
+    LINGUA_NO_PEDIDO[lingua] ?? LINGUA_NO_PEDIDO.pt,
   ].join("\n");
   return {
     systemInstruction: { parts: [{ text: `${PROMPT}\n\n${FIM_LINGUA[lingua] ?? FIM_LINGUA.pt}` }] },
@@ -107,7 +116,7 @@ const TENTATIVAS = 3;
  * Chama o Gemini com tempo-limite total. Se o modelo estiver sobrecarregado (429/500/503),
  * tenta de novo até 2 vezes, com espera crescente. Nunca lança: falha vira { erro }.
  */
-export async function chamarGemini({ chave, pedido, buscar, limiteMs, esperaMs = 1500 }) {
+export async function chamarGemini({ chave, pedido, buscar, limiteMs, esperaMs = 1500, detalhar = false }) {
   const controle = new AbortController();
   const relogio = setTimeout(() => controle.abort(), limiteMs);
   try {
@@ -124,8 +133,11 @@ export async function chamarGemini({ chave, pedido, buscar, limiteMs, esperaMs =
         return lido;
       }
       // Só o código e o status do Google (ex.: PERMISSION_DENIED): nunca o pedido, a chave ou a mensagem.
-      const status = await resposta.json().then((j) => j?.error?.status).catch(() => null);
-      console.warn(`gemini: HTTP ${resposta.status}${typeof status === "string" && /^[A-Z_]+$/.test(status) ? ` ${status}` : ""}`);
+      // detalhar (só no script local) mostra também a mensagem do Google; o Worker nunca a registra.
+      const erroGoogle = await resposta.json().then((j) => j?.error ?? {}).catch(() => ({}));
+      const status = typeof erroGoogle.status === "string" && /^[A-Z_]+$/.test(erroGoogle.status) ? ` ${erroGoogle.status}` : "";
+      const detalhe = detalhar && typeof erroGoogle.message === "string" ? ` — ${erroGoogle.message}` : "";
+      console.warn(`gemini: HTTP ${resposta.status}${status}${detalhe}`);
       if (!REPETIR.has(resposta.status) || tentativa >= TENTATIVAS) return { erro: "ia_indisponivel" };
       await new Promise((ok) => setTimeout(ok, esperaMs * tentativa));
     }
