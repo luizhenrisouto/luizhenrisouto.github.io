@@ -4,8 +4,9 @@
 // Todo texto vindo da IA entra no DOM por textContent, nunca por innerHTML.
 import { formatarNumero } from "./dados.js";
 
-// Preenchida no deploy do Worker (worker/README.md).
-export const URL_TRIAGEM_VIVO = "https://triagem-ao-vivo.PREENCHER.workers.dev/triagem";
+// Preenchida no deploy do Worker (worker/README.md). Vazia = análise ao vivo desligada (nada é enviado a lugar nenhum).
+export const URL_TRIAGEM_VIVO = "";
+const urlVivo = () => globalThis.__labUrl ?? URL_TRIAGEM_VIVO;
 const MIN_ERRO = 20;
 const MAX_ERRO = 4000;
 const MAX_CODIGO = 2000;
@@ -23,6 +24,8 @@ const MENSAGENS = {
     rede: "A IA ao vivo não está disponível agora. Os exemplos continuam funcionando.",
     analisando: "Analisando…",
     restam: (n) => `restam ${n} hoje`,
+    emBreve: "análise ao vivo em breve",
+    inicial: "até 5 análises por dia",
     acerto: (pct, falhas) => `Acerto da mesma IA na triagem do CI, que também recebe o print da tela: ${pct}% em ${falhas} falhas · suíte de demonstração com gabarito`,
   },
   en: {
@@ -36,6 +39,8 @@ const MENSAGENS = {
     rede: "The live AI is not available right now. The examples still work.",
     analisando: "Analyzing…",
     restam: (n) => `${n} left today`,
+    emBreve: "live analysis coming soon",
+    inicial: "up to 5 analyses per day",
     acerto: (pct, falhas) => `Accuracy of the same AI in the CI triage, which also gets the screenshot: ${pct}% over ${falhas} failures · demo suite with answer key`,
   },
 };
@@ -127,7 +132,13 @@ function abrirExemplo(doc, id) {
 }
 
 function mostrarRestantes(doc) {
-  if (estado.restantes !== null) doc.getElementById("lab-restantes").textContent = MENSAGENS[estado.lingua].restam(estado.restantes);
+  if (!urlVivo()) {
+    doc.getElementById("lab-restantes").textContent = MENSAGENS[estado.lingua].emBreve;
+    doc.getElementById("lab-analisar").disabled = true;
+    return;
+  }
+  const m = MENSAGENS[estado.lingua];
+  doc.getElementById("lab-restantes").textContent = estado.restantes === null ? m.inicial : m.restam(estado.restantes);
 }
 
 /** Rótulo do acerto medido no CI (indice.json publicado). */
@@ -147,7 +158,7 @@ function avisar(doc, codigo) {
 
 /** Manda o texto colado ao Worker e mostra o resultado. Uma análise por vez. */
 export async function analisarAoVivo(doc, { buscar }) {
-  if (estado.ocupado) return;
+  if (estado.ocupado || !urlVivo()) return;
   const erro = doc.getElementById("lab-erro").value.trim();
   const codigo = doc.getElementById("lab-codigo").value.trim();
   if (erro.length > MAX_ERRO || codigo.length > MAX_CODIGO) return avisar(doc, "texto_longo");
@@ -161,7 +172,7 @@ export async function analisarAoVivo(doc, { buscar }) {
   const controle = new AbortController();
   const relogio = setTimeout(() => controle.abort(), globalThis.__labLimiteMs ?? LIMITE_MS);
   try {
-    const resposta = await buscar(URL_TRIAGEM_VIVO, {
+    const resposta = await buscar(urlVivo(), {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ erro, codigo, lingua }),
@@ -209,5 +220,6 @@ export function iniciarLaboratorio(doc, { exemplos, lingua }) {
     campo.addEventListener("input", () => { contador.textContent = String(campo.value.trim().length); });
     doc.getElementById("lab-analisar").addEventListener("click", () => analisarAoVivo(doc, { buscar: (u, o) => fetch(u, o) }));
   }
+  mostrarRestantes(doc);
   desenharExemplos(doc);
 }

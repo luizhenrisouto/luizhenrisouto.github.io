@@ -115,4 +115,27 @@ describe("rota POST /triagem", () => {
     expect(tudo).not.toContain("Silva");
     expect(tudo).not.toContain("CODIGO-SECRETO-DO-TESTE");
   });
+
+  test("segredo faltando → 503 indisponivel, sem contar uso nem chamar a IA", async () => {
+    for (const falta of ["GEMINI_API_KEY", "SAL"]) {
+      const env = ambiente();
+      delete env[falta];
+      const r = await tratar(pedido({ erro: ERRO, lingua: "pt" }), env, deps());
+      expect(r.status).toBe(503);
+      expect(r.headers.get("Access-Control-Allow-Origin")).toBe(ORIGEM);
+      expect((await r.json()).erro).toBe("indisponivel");
+      expect(env.LIMITES.dados.size).toBe(0);
+    }
+    expect(geminiOk).not.toHaveBeenCalled();
+  });
+
+  test("falha do KV (ex.: escrita concorrente) → 502 ia_indisponivel com CORS, sem chamar a IA", async () => {
+    const env = ambiente();
+    env.LIMITES.put = async () => { throw new Error("429 Too Many Requests"); };
+    const r = await tratar(pedido({ erro: ERRO, lingua: "pt" }), env, deps());
+    expect(r.status).toBe(502);
+    expect(r.headers.get("Access-Control-Allow-Origin")).toBe(ORIGEM);
+    expect((await r.json()).erro).toBe("ia_indisponivel");
+    expect(geminiOk).not.toHaveBeenCalled();
+  });
 });

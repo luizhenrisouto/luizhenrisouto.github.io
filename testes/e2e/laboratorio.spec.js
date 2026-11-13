@@ -73,6 +73,10 @@ async function colar(page, texto = ERRO_COLADO) {
 }
 
 test.describe("laboratório: análise ao vivo", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => { window.__labUrl = "https://triagem-ao-vivo.teste.workers.dev/triagem"; });
+  });
+
   test("antes da primeira análise mostra 'até 5 análises por dia'", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("#lab-restantes")).toHaveText("até 5 análises por dia");
@@ -171,4 +175,14 @@ test.describe("laboratório: análise ao vivo", () => {
     await expect(page.locator("#lab-acerto")).toHaveText(
       "Acerto da mesma IA na triagem do CI, que também recebe o print da tela: 97% em 31 falhas · suíte de demonstração com gabarito");
   });
+});
+
+test("sem o endereço do servidor configurado, a análise ao vivo fica desligada e nada é enviado", async ({ page }) => {
+  const chamadas = [];
+  page.on("request", (r) => { if (r.url().includes("workers.dev")) chamadas.push(r.url()); });
+  await page.goto("/");
+  await page.locator("#lab-erro").fill("TimeoutError: page.waitForSelector: Timeout 30000ms exceeded");
+  await expect(page.getByRole("button", { name: "Analisar" })).toBeDisabled();
+  await expect(page.locator("#lab-restantes")).toHaveText("análise ao vivo em breve");
+  expect(chamadas).toEqual([]);
 });

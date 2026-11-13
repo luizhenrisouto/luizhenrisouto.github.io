@@ -17,6 +17,7 @@ const MENSAGENS = {
     limite_geral: "O limite de análises de hoje foi atingido. Os exemplos continuam funcionando.",
     ia_indisponivel: "A IA não respondeu agora. Tente de novo em instantes ou use os exemplos.",
     resposta_invalida: "A IA devolveu uma resposta fora do formato. Tente de novo ou use os exemplos.",
+    indisponivel: "A IA ao vivo não está disponível agora. Os exemplos continuam funcionando.",
   },
   en: {
     origem: "Origin not allowed.",
@@ -26,9 +27,10 @@ const MENSAGENS = {
     limite_geral: "Today's analysis limit was reached. The examples still work.",
     ia_indisponivel: "The AI did not answer right now. Try again in a moment or use the examples.",
     resposta_invalida: "The AI returned an answer in the wrong format. Try again or use the examples.",
+    indisponivel: "The live AI is not available right now. The examples still work.",
   },
 };
-const STATUS = { origem: 403, texto_curto: 400, texto_longo: 400, limite_pessoa: 429, limite_geral: 429, ia_indisponivel: 502, resposta_invalida: 502 };
+const STATUS = { origem: 403, texto_curto: 400, texto_longo: 400, limite_pessoa: 429, limite_geral: 429, ia_indisponivel: 502, resposta_invalida: 502, indisponivel: 503 };
 
 function json(corpo, status, origem) {
   const headers = { "content-type": "application/json; charset=utf-8", Vary: "Origin" };
@@ -77,7 +79,16 @@ export async function tratar(req, env, deps) {
   if (erro.length > MAX_ERRO || codigo.length > MAX_CODIGO) return falha("texto_longo", lingua, permitida);
   if (erro.length < MIN_ERRO) return falha("texto_curto", lingua, permitida);
 
-  const uso = await registrarUso({ kv: env.LIMITES, ip: req.headers.get("CF-Connecting-IP") || "sem-ip", sal: env.SAL, agora: deps.agora() });
+  // Sem os segredos, o Worker não funciona direito (sem sal o hash do IP perde a proteção): para antes de contar uso.
+  if (!env.GEMINI_API_KEY || !env.SAL) return falha("indisponivel", lingua, permitida);
+
+  // O KV pode recusar escritas seguidas na mesma chave: na dúvida, não chama a IA (protege a cota).
+  let uso;
+  try {
+    uso = await registrarUso({ kv: env.LIMITES, ip: req.headers.get("CF-Connecting-IP") || "sem-ip", sal: env.SAL, agora: deps.agora() });
+  } catch {
+    return falha("ia_indisponivel", lingua, permitida);
+  }
   if (!uso.ok) return falha(uso.erro, lingua, permitida, { restantes: 0 });
 
   const resultado = await chamarGemini({
