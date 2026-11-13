@@ -39,7 +39,7 @@ test("data inválida ao vivo usa a reserva, também em EN", async ({ page }) => 
   await page.route(URL_TRIAGEM, (r) => r.fulfill({ json: { ...indice({}), atualizadoEm: "lixo" } }));
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-dados", "reserva");
-  await page.getByRole("button", { name: "EN" }).click();
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   const [a, m, d] = RESERVA.atualizadoEm.slice(0, 10).split("-");
   const mes = new Date(Date.UTC(+a, +m - 1, +d)).toLocaleString("en-US", { month: "short", timeZone: "UTC" });
   await expect(page.locator('[data-num="atualizado"]')).toHaveText(`${mes} ${+d}, ${a}`);

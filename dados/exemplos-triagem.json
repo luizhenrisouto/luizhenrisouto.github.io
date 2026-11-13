@@ -1,0 +1,184 @@
+{
+  "geradoEm": "2026-11-13T16:25:45.355Z",
+  "modelo": "gemini-3.5-flash-lite",
+  "exemplos": [
+    {
+      "id": "imagem-catalogo",
+      "rotulo": {
+        "pt": "Imagem errada no catálogo",
+        "en": "Wrong image in the catalog"
+      },
+      "gabarito": "bug_produto",
+      "erro": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 6\nReceived: 1\n    at testes/e2e/catalogo.spec.ts:25:35",
+      "codigo": "  });\n\n  test(\"imagem de cada produto corresponde ao produto\", async ({ page }) => {\n    await login(page, \"problem_user\");\n    const imagens = await page.locator(\".inventory_item_img img\").evaluateAll((els) =>\n      els.map((e) => (e as HTMLImageElement).getAttribute(\"src\")),\n    );\n    expect(new Set(imagens).size).toBe(imagens.length);\n  });\n\n  test(\"catálogo abre em tempo aceitável\", async ({ page }) => {\n    await page.goto(\"/\");\n    await page.getByTestId(\"username\").fill(\"performance_glitch_user\");\n    await page.getByTestId(\"password\").fill(\"secret_sauce\");",
+      "respostas": {
+        "pt": {
+          "categoria": "bug_produto",
+          "confianca": 0.9,
+          "resumo": "Todas as imagens do catálogo exibem o mesmo arquivo para produtos diferentes",
+          "passos": [
+            "Fazer login na aplicação com o usuário problem_user",
+            "Acessar a página do catálogo",
+            "Verificar os atributos src das imagens dos produtos"
+          ],
+          "esperado": "Cada produto no catálogo deve possuir uma imagem distinta, resultando em um conjunto de URLs únicas",
+          "obtido": "Todas as imagens retornaram o mesmo link, resultando em um conjunto de tamanho 1 para um total de 6 produtos",
+          "causaProvavel": "O usuário problem_user simula um problema conhecido onde a aplicação exibe a mesma imagem quebrada para todos os itens do inventário",
+          "sugestaoCorrecao": "O time do produto deve verificar a lógica de carregamento de imagens para o perfil problem_user"
+        },
+        "en": {
+          "categoria": "bug_produto",
+          "confianca": 0.9,
+          "resumo": "All product images are identical for problem_user",
+          "passos": [
+            "Log in to the application using problem_user",
+            "Inspect the image sources in the product catalog"
+          ],
+          "esperado": "Each product should have a unique image corresponding to the item.",
+          "obtido": "All 6 product items share the same single unique image source.",
+          "causaProvavel": "The application logic for problem_user intentionally serves broken or duplicate images, which is a known behavior for this specific test user profile in SauceDemo.",
+          "sugestaoCorrecao": "Verify if the product image bug for problem_user is intended behavior in the product requirements or if the image mapping needs to be fixed."
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    },
+    {
+      "id": "sobrenome-checkout",
+      "rotulo": {
+        "pt": "Sobrenome some no checkout",
+        "en": "Last name vanishes at checkout"
+      },
+      "gabarito": "bug_produto",
+      "erro": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByTestId('lastName')\nExpected: \"Lima\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" getByTestId('lastName') with timeout 5000ms\n  - waiting for getByTestId('lastName')\n       - unexpected value \"\"\n    at testes/e2e/checkout.spec.ts:29:48",
+      "codigo": "    await page.getByTestId(\"finish\").click();\n    await expect(page.getByTestId(\"complete-header\")).toHaveText(\"Thank you for your order!\");\n  });\n\n  test(\"campo sobrenome aceita texto no checkout\", async ({ page }) => {\n    await irParaCheckout(page, \"problem_user\");\n    await page.getByTestId(\"lastName\").fill(\"Lima\");\n    await expect(page.getByTestId(\"lastName\")).toHaveValue(\"Lima\");\n  });\n\n  test(\"finalizar compra conclui o pedido\", async ({ page }) => {\n    await irParaCheckout(page, \"error_user\");\n    await preencherDados(page);\n    await page.getByTestId(\"continue\").click();",
+      "respostas": {
+        "pt": {
+          "categoria": "bug_produto",
+          "confianca": 0.9,
+          "resumo": "Campo sobrenome não retém o valor digitado para o usuário problem_user",
+          "passos": [
+            "Acessar a página de checkout com o usuário problem_user",
+            "Digitar Lima no campo sobrenome"
+          ],
+          "esperado": "O campo sobrenome deve conter o valor Lima",
+          "obtido": "O campo sobrenome permanece vazio",
+          "causaProvavel": "O usuário utilizado no teste é o problem_user, conhecido por simular falhas na aplicação, impedindo que o campo aceite o texto digitado.",
+          "sugestaoCorrecao": "O time do produto deve verificar o comportamento do componente de input para o usuário problem_user no checkout."
+        },
+        "en": {
+          "categoria": "bug_produto",
+          "confianca": 0.9,
+          "resumo": "Last name field fails to retain typed value for problem_user",
+          "passos": [
+            "Navigate to the checkout page using a problem user",
+            "Type 'Lima' into the last name input field",
+            "Assert that the last name input field has the value 'Lima'"
+          ],
+          "esperado": "The last name input field should contain the value 'Lima'.",
+          "obtido": "The last name input field is empty.",
+          "causaProvavel": "The test correctly fills the field, but the application logic for the 'problem_user' discards the input in the last name field, indicating a product defect.",
+          "sugestaoCorrecao": "The product team should investigate why the problem_user account fails to accept input in the last name field during checkout."
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    },
+    {
+      "id": "tempo-catalogo",
+      "rotulo": {
+        "pt": "Catálogo lento por 106 ms",
+        "en": "Catalog 106 ms too slow"
+      },
+      "gabarito": "teste_instavel",
+      "erro": "Error: catálogo deve abrir em menos de 5165 ms\n\nexpect(received).toBeLessThan(expected)\n\nExpected: < 5165\nReceived:   5271\n    at testes/e2e/catalogo.spec.ts:38:71",
+      "codigo": "    await page.getByTestId(\"password\").fill(\"secret_sauce\");\n    const limiteMs = Number(process.env.LIMITE_CATALOGO_MS ?? 5165);\n    const inicio = Date.now();\n    await page.getByTestId(\"login-button\").click();\n    await expect(page.getByTestId(\"inventory-list\")).toBeVisible({ timeout: 15_000 });\n    const tempoMs = Date.now() - inicio;\n    test.info().annotations.push({ type: \"tempo-catalogo-ms\", description: String(tempoMs) });\n    expect(tempoMs, `catálogo deve abrir em menos de ${limiteMs} ms`).toBeLessThan(limiteMs);\n  });\n});\n",
+      "respostas": {
+        "pt": {
+          "categoria": "teste_instavel",
+          "confianca": 0.8,
+          "resumo": "Falha por tempo limite excedido na abertura do catálogo",
+          "passos": [
+            "Preencher a senha com secret_sauce",
+            "Clicar no botão de login",
+            "Aguardar a exibição da lista de inventário",
+            "Medir o tempo decorrido e comparar com o limite de 5165 ms"
+          ],
+          "esperado": "O catálogo deve abrir em menos de 5165 ms.",
+          "obtido": "O catálogo demorou 5271 ms para abrir.",
+          "causaProvavel": "O teste falhou devido a uma pequena oscilação de performance no ambiente, ultrapassando o limite estrito por uma margem muito pequena.",
+          "sugestaoCorrecao": "Aumentar margem de tolerância do tempo limite ou otimizar a performance da página de login."
+        },
+        "en": {
+          "categoria": "teste_instavel",
+          "confianca": 0.85,
+          "resumo": "Catalog load time exceeded the threshold limit",
+          "passos": [
+            "Open the application login page",
+            "Fill in the password field",
+            "Click the login button",
+            "Measure the time taken for the inventory list to become visible"
+          ],
+          "esperado": "The catalog should open in less than 5165 ms",
+          "obtido": "The catalog took 5271 ms to open",
+          "causaProvavel": "The test failed due to a minor performance fluctuation close to the time limit, indicating potential environment instability rather than a hard product bug.",
+          "sugestaoCorrecao": "Increase the time limit slightly or optimize the environment resources to reduce test flakiness."
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    },
+    {
+      "id": "remover-carrinho",
+      "rotulo": {
+        "pt": "Botão remover não encontrado",
+        "en": "Remove button not found"
+      },
+      "gabarito": "teste_quebrado",
+      "erro": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByTestId('remover-item')\n    at testes/e2e/carrinho.spec.ts:15:44",
+      "codigo": "    await expect(page.getByTestId(\"shopping-cart-badge\")).toHaveText(\"1\");\n  });\n\n  test(\"remover produto esvazia o carrinho\", async ({ page }) => {\n    await login(page, \"standard_user\");\n    await page.getByTestId(\"add-to-cart-sauce-labs-backpack\").click();\n    await page.getByTestId(\"shopping-cart-link\").click();\n    await page.getByTestId(\"remover-item\").click({ timeout: 5_000 });\n    await expect(page.getByTestId(\"inventory-item\")).toHaveCount(0);\n  });\n});\n",
+      "respostas": {
+        "pt": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.9,
+          "resumo": "Falha ao clicar no elemento de remoção do item no carrinho por seletor incorreto ou ausente",
+          "passos": [
+            "Fazer login com o usuário padrão",
+            "Adicionar o produto da mochila ao carrinho",
+            "Acessar a página do carrinho de compras",
+            "Tentar clicar no botão para remover o item"
+          ],
+          "esperado": "O botão com o identificador de remoção deveria estar visível e ser clicável.",
+          "obtido": "O tempo limite de 5000ms foi excedido ao aguardar o elemento com o identificador 'remover-item'.",
+          "causaProvavel": "O seletor 'remover-item' utilizado no teste pode não corresponder ao atributo data-testid real renderizado na página de carrinho.",
+          "sugestaoCorrecao": "Verificar no código fonte da aplicação qual é o data-testid correto do botão de remoção e atualizar o teste."
+        },
+        "en": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.9,
+          "resumo": "Timeout clicking remove item button in cart",
+          "passos": [
+            "Log in with standard_user",
+            "Add Sauce Labs Backpack to cart",
+            "Navigate to shopping cart",
+            "Click the remove item button"
+          ],
+          "esperado": "The item remove button should be clickable and remove the product from the cart.",
+          "obtido": "The test timed out waiting for the locator getByTestId('remover-item') to be ready for click.",
+          "causaProvavel": "The test uses the test ID 'remover-item', which likely does not match the actual test ID implemented in the application markup for the remove button.",
+          "sugestaoCorrecao": "Update the test ID in the test code to match the correct attribute value used in the application for the remove button."
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    }
+  ]
+}

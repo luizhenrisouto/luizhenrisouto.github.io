@@ -10,7 +10,7 @@ const LINGUAS = ["pt", "en"];
 
 /** Descreve a chave sem mostrá-la: só o tamanho e se tem o formato das chaves do Google. */
 export function descreverChave(chave) {
-  return `chave com ${chave.length} caracteres, ${chave.startsWith("AIza") ? "começa como chave do Google (AIza…)" : "NÃO começa com AIza"}`;
+  return `chave com ${chave.length} caracteres, ${chave.startsWith("AIza") ? "começa como chave do Google (AIza…)" : "formato sem AIza (as chaves mais novas do Google também são assim)"}`;
 }
 
 export async function gerarExemplos({ falhas, chave: bruta, buscar, agora }) {

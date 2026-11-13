@@ -17,11 +17,11 @@ test.use({ locale: "pt-BR" });
 test("troca para EN e volta", async ({ page }) => {
   await vivo(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "EN" }).click();
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   await expect(page.locator("h1")).toHaveText("QA who builds AI tools. And ships them.");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
-  await expect(page.getByRole("button", { name: "EN" })).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "PT" }).click();
+  await expect(page.getByRole("button", { name: "EN", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "PT", exact: true }).click();
   await expect(page.locator("h1")).toHaveText("QA que constrói ferramentas com IA. E coloca no ar.");
   await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
 });
@@ -30,7 +30,7 @@ test("números mudam de formato no EN", async ({ page }) => {
   await vivo(page);
   await page.goto("/");
   await expect(page.locator('[data-num="horasTriagem"]')).toHaveText("1,9");
-  await page.getByRole("button", { name: "EN" }).click();
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   await expect(page.locator('[data-num="horasTriagem"]')).toHaveText("1.9");
   await expect(page.locator('[data-num="atualizado"]')).toHaveText("Nov 20, 2026");
 });
@@ -38,7 +38,7 @@ test("números mudam de formato no EN", async ({ page }) => {
 test("lembra a escolha ao recarregar", async ({ page }) => {
   await vivo(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "EN" }).click();
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   await page.reload();
   await expect(page.locator("h1")).toHaveText("QA who builds AI tools. And ships them.");
 });
@@ -52,7 +52,7 @@ test("funciona com localStorage bloqueado", async ({ page }) => {
   });
   await vivo(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "EN" }).click();
+  await page.getByRole("button", { name: "EN", exact: true }).click();
   await expect(page.locator("h1")).toHaveText("QA who builds AI tools. And ships them.");
   expect(erros).toEqual([]);
 });

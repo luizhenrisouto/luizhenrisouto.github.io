@@ -70,6 +70,6 @@ describe("exemplos da triagem ao vivo", () => {
     expect(chave).toHaveLength(39);
     expect(d).toBe("chave com 39 caracteres, começa como chave do Google (AIza…)");
     expect(d).not.toContain("segredo");
-    expect(descreverChave("xyz")).toBe("chave com 3 caracteres, NÃO começa com AIza");
+    expect(descreverChave("xyz")).toBe("chave com 3 caracteres, formato sem AIza (as chaves mais novas do Google também são assim)");
   });
 });
