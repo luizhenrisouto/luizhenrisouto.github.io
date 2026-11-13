@@ -90,7 +90,7 @@ export const TEXTOS = {
     "ferr.projetos": "Nos meus projetos",
     "ferr.trabalho": "No trabalho",
     "contato.titulo": "Vamos conversar",
-    "contato.intro": "Procuro um time que use IA para resolver problemas de negócio de verdade.",
+    "contato.intro": "Tem um problema de negócio que a IA pode resolver? Eu construo a solução e meço se ela funciona.",
     "rodape": "Site estático, testado com Playwright e Vitest.",
   },
   en: {
@@ -181,7 +181,7 @@ export const TEXTOS = {
     "ferr.projetos": "In my projects",
     "ferr.trabalho": "At work",
     "contato.titulo": "Let's talk",
-    "contato.intro": "I'm looking for a team that uses AI to solve real business problems.",
+    "contato.intro": "Got a business problem AI could solve? I build the solution and measure whether it works.",
     "rodape": "Static site, tested with Playwright and Vitest.",
   },
 };

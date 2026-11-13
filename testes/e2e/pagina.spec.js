@@ -57,3 +57,9 @@ test("Mater descrita com linguagem profissional", async ({ page }) => {
   const texto = await page.locator("body").innerText();
   expect(texto).not.toMatch(/painel da dona|da dona/);
 });
+
+test("contato convida para um problema, sem pedir emprego", async ({ page }) => {
+  await page.goto("/");
+  const intro = page.locator("#contato .secao__intro");
+  await expect(intro).toHaveText("Tem um problema de negócio que a IA pode resolver? Eu construo a solução e meço se ela funciona.");
+});
