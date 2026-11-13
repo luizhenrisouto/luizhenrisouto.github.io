@@ -1,0 +1,174 @@
+{
+  "geradoEm": "2026-11-13T12:00:00.000Z",
+  "modelo": "gemini-3.5-flash-lite",
+  "exemplos": [
+    {
+      "id": "imagem-catalogo",
+      "rotulo": {
+        "pt": "Imagem errada no catálogo",
+        "en": "Wrong image in the catalog"
+      },
+      "gabarito": "bug_produto",
+      "erro": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 6\nReceived: 1\n    at testes/e2e/catalogo.spec.ts:25:35",
+      "codigo": "  });\n\n  test(\"imagem de cada produto corresponde ao produto\", async ({ page }) => {\n    await login(page, \"problem_user\");\n    const imagens = await page.locator(\".inventory_item_img img\").evaluateAll((els) =>\n      els.map((e) => (e as HTMLImageElement).getAttribute(\"src\")),\n    );\n    expect(new Set(imagens).size).toBe(imagens.length);\n  });\n\n  test(\"catálogo abre em tempo aceitável\", async ({ page }) => {\n    await page.goto(\"/\");\n    await page.getByTestId(\"username\").fill(\"performance_glitch_user\");\n    await page.getByTestId(\"password\").fill(\"secret_sauce\");",
+      "respostas": {
+        "pt": {
+          "categoria": "bug_produto",
+          "confianca": 0.82,
+          "resumo": "Resumo em português de bug_produto",
+          "passos": [
+            "Abrir o site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        },
+        "en": {
+          "categoria": "bug_produto",
+          "confianca": 0.82,
+          "resumo": "English summary of bug_produto",
+          "passos": [
+            "Open the site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    },
+    {
+      "id": "sobrenome-checkout",
+      "rotulo": {
+        "pt": "Sobrenome some no checkout",
+        "en": "Last name vanishes at checkout"
+      },
+      "gabarito": "bug_produto",
+      "erro": "Error: expect(locator).toHaveValue(expected) failed\n\nLocator:  getByTestId('lastName')\nExpected: \"Lima\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveValue\" getByTestId('lastName') with timeout 5000ms\n  - waiting for getByTestId('lastName')\n       - unexpected value \"\"\n    at testes/e2e/checkout.spec.ts:29:48",
+      "codigo": "    await page.getByTestId(\"finish\").click();\n    await expect(page.getByTestId(\"complete-header\")).toHaveText(\"Thank you for your order!\");\n  });\n\n  test(\"campo sobrenome aceita texto no checkout\", async ({ page }) => {\n    await irParaCheckout(page, \"problem_user\");\n    await page.getByTestId(\"lastName\").fill(\"Lima\");\n    await expect(page.getByTestId(\"lastName\")).toHaveValue(\"Lima\");\n  });\n\n  test(\"finalizar compra conclui o pedido\", async ({ page }) => {\n    await irParaCheckout(page, \"error_user\");\n    await preencherDados(page);\n    await page.getByTestId(\"continue\").click();",
+      "respostas": {
+        "pt": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.82,
+          "resumo": "Resumo em português de teste_quebrado",
+          "passos": [
+            "Abrir o site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        },
+        "en": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.82,
+          "resumo": "English summary of teste_quebrado",
+          "passos": [
+            "Open the site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        }
+      },
+      "acertou": {
+        "pt": false,
+        "en": false
+      }
+    },
+    {
+      "id": "tempo-catalogo",
+      "rotulo": {
+        "pt": "Catálogo lento por 106 ms",
+        "en": "Catalog 106 ms too slow"
+      },
+      "gabarito": "teste_instavel",
+      "erro": "Error: catálogo deve abrir em menos de 5165 ms\n\nexpect(received).toBeLessThan(expected)\n\nExpected: < 5165\nReceived:   5271\n    at testes/e2e/catalogo.spec.ts:38:71",
+      "codigo": "    await page.getByTestId(\"password\").fill(\"secret_sauce\");\n    const limiteMs = Number(process.env.LIMITE_CATALOGO_MS ?? 5165);\n    const inicio = Date.now();\n    await page.getByTestId(\"login-button\").click();\n    await expect(page.getByTestId(\"inventory-list\")).toBeVisible({ timeout: 15_000 });\n    const tempoMs = Date.now() - inicio;\n    test.info().annotations.push({ type: \"tempo-catalogo-ms\", description: String(tempoMs) });\n    expect(tempoMs, `catálogo deve abrir em menos de ${limiteMs} ms`).toBeLessThan(limiteMs);\n  });\n});\n",
+      "respostas": {
+        "pt": {
+          "categoria": "teste_instavel",
+          "confianca": 0.82,
+          "resumo": "<img src=x onerror=window.__x=1>",
+          "passos": [
+            "Abrir o site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        },
+        "en": {
+          "categoria": "teste_instavel",
+          "confianca": 0.82,
+          "resumo": "English summary of teste_instavel",
+          "passos": [
+            "Open the site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    },
+    {
+      "id": "remover-carrinho",
+      "rotulo": {
+        "pt": "Botão remover não encontrado",
+        "en": "Remove button not found"
+      },
+      "gabarito": "teste_quebrado",
+      "erro": "TimeoutError: locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for getByTestId('remover-item')\n    at testes/e2e/carrinho.spec.ts:15:44",
+      "codigo": "    await expect(page.getByTestId(\"shopping-cart-badge\")).toHaveText(\"1\");\n  });\n\n  test(\"remover produto esvazia o carrinho\", async ({ page }) => {\n    await login(page, \"standard_user\");\n    await page.getByTestId(\"add-to-cart-sauce-labs-backpack\").click();\n    await page.getByTestId(\"shopping-cart-link\").click();\n    await page.getByTestId(\"remover-item\").click({ timeout: 5_000 });\n    await expect(page.getByTestId(\"inventory-item\")).toHaveCount(0);\n  });\n});\n",
+      "respostas": {
+        "pt": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.82,
+          "resumo": "Resumo em português de teste_quebrado",
+          "passos": [
+            "Abrir o site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        },
+        "en": {
+          "categoria": "teste_quebrado",
+          "confianca": 0.82,
+          "resumo": "English summary of teste_quebrado",
+          "passos": [
+            "Open the site",
+            "Clicar"
+          ],
+          "esperado": "esperado",
+          "obtido": "obtido",
+          "causaProvavel": "causa",
+          "sugestaoCorrecao": "sugestão"
+        }
+      },
+      "acertou": {
+        "pt": true,
+        "en": true
+      }
+    }
+  ]
+}

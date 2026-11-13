@@ -1,6 +1,7 @@
 // Liga os dados da triagem (ao vivo ou reserva) e os números dos projetos à página.
 import { lerTriagem, formatarNumero, formatarUsd, formatarData } from "./dados.js";
 import { TEXTOS, aplicarTextos, escolherLingua } from "./i18n.js";
+import { iniciarLaboratorio, trocarLinguaLaboratorio } from "./laboratorio.js";
 
 /** Escreve os números em todos os [data-num] da página, no formato do idioma. */
 export function pintarNumeros(doc, triagem, projetos, lingua) {
@@ -45,6 +46,7 @@ function mudarLingua(lingua) {
   estado.lingua = lingua;
   aplicarTextos(document, lingua);
   pintarNumeros(document, estado.triagem, estado.projetos, lingua);
+  trocarLinguaLaboratorio(document, lingua);
 }
 
 async function iniciar() {
@@ -56,6 +58,10 @@ async function iniciar() {
   }
   const inicial = escolherLingua(lerSalva(), navigator.language);
   if (inicial !== "pt") mudarLingua(inicial);
+  iniciarLaboratorio(document, { exemplos: [], lingua: estado.lingua });
+  lerJson("dados/exemplos-triagem.json")
+    .then((dados) => iniciarLaboratorio(document, { exemplos: dados.exemplos, lingua: estado.lingua }))
+    .catch(() => {}); // sem o arquivo, o bloco de exemplos fica escondido
   try {
     const [reserva, projetos] = await Promise.all([lerJson("dados/reserva.json"), lerJson("dados/projetos.json")]);
     estado.projetos = projetos;
@@ -73,7 +79,7 @@ async function iniciar() {
 }
 
 // Brilho que segue o mouse dentro dos cartões. Em telas de toque não há mouse, então nada muda.
-const CARTOES = ".projeto, .caso, .testes li";
+const CARTOES = ".projeto, .caso, .testes li, .lab-painel, .lab-resultado";
 const PEQUENOS = ".botao, .chips li";
 export function ativarBrilho(doc) {
   doc.querySelectorAll(CARTOES).forEach((el) => el.classList.add("brilho"));

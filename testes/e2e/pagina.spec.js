@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test("seções na ordem aprovada", async ({ page }) => {
   await page.goto("/");
   const ids = await page.locator("main > section").evaluateAll((s) => s.map((e) => e.id));
-  expect(ids).toEqual(["topo", "projetos", "como-testo", "trajetoria", "ferramentas", "contato"]);
+  expect(ids).toEqual(["topo", "projetos", "laboratorio", "como-testo", "trajetoria", "ferramentas", "contato"]);
 });
 
 test("pipeline do topo tem 5 etapas e termina no impacto", async ({ page }) => {

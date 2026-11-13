@@ -21,6 +21,7 @@
       <a class="marca" href="#topo">luiz.souto</a>
       <nav class="menu__links" aria-label="Seções">
         <a href="#projetos" data-i18n="menu.projetos">projetos</a>
+        <a href="#laboratorio" data-i18n="menu.laboratorio">laboratório</a>
         <a href="#como-testo" data-i18n="menu.testo">como testo</a>
         <a href="#trajetoria" data-i18n="menu.trajetoria">experiência</a>
         <a href="#ferramentas" data-i18n="menu.ferramentas">ferramentas</a>
@@ -127,6 +128,39 @@
             <p class="projeto__links"><span class="em-breve" data-i18n="mater.breve">demonstração em breve</span></p>
             <p class="tecnologias mono">HTML · JavaScript · Supabase · Postgres · Deno · React · Claude · Mercado Pago · Vitest · Playwright</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="laboratorio" class="secao">
+      <div class="largura">
+        <p class="secao__job mono">job: laboratorio</p>
+        <h2 data-i18n="lab.titulo">Teste a minha IA de triagem</h2>
+        <p class="secao__intro" data-i18n="lab.intro">Cole o erro de um teste que falhou e veja a IA dizer se é bug do produto, teste instável ou teste quebrado.</p>
+        <div class="lab">
+          <div class="lab-painel">
+            <div class="lab-exemplos-bloco">
+              <p class="lab-rotulo" data-i18n="lab.exemplos">Comece por uma falha real da suíte de demonstração:</p>
+              <div id="lab-exemplos" class="lab-exemplos"></div>
+            </div>
+            <label class="lab-rotulo" for="lab-erro" data-i18n="lab.campoErro">Mensagem de erro e stack</label>
+            <textarea id="lab-erro" class="lab-campo mono" rows="7" spellcheck="false"></textarea>
+            <p class="lab-contador mono"><span id="lab-contador">0</span> / 4.000</p>
+            <details class="lab-codigo">
+              <summary data-i18n="lab.campoCodigo">Trecho do teste (opcional)</summary>
+              <textarea id="lab-codigo" class="lab-campo mono" rows="5" spellcheck="false" aria-label="Trecho do teste"></textarea>
+            </details>
+            <p class="lab-aviso" data-i18n="lab.aviso">Não cole dados confidenciais: a análise usa o Gemini no plano gratuito.</p>
+            <div class="lab-acoes">
+              <button type="button" id="lab-analisar" class="botao botao--cheio" data-i18n="lab.analisar">Analisar</button>
+              <span id="lab-restantes" class="lab-restantes mono" data-i18n="lab.restantesInicial">até 5 análises por dia</span>
+            </div>
+            <p id="lab-mensagem" class="lab-mensagem" role="status"></p>
+          </div>
+          <div class="lab-saida">
+            <article id="lab-resultado" class="lab-resultado" aria-live="polite"><p class="lab-vazio" data-i18n="lab.vazio">O resultado aparece aqui.</p></article>
+            <p id="lab-acerto" class="lab-acerto"></p>
+          </div>
         </div>
       </div>
     </section>
