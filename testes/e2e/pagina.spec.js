@@ -63,3 +63,9 @@ test("contato convida para um problema, sem pedir emprego", async ({ page }) => 
   const intro = page.locator("#contato .secao__intro");
   await expect(intro).toHaveText("Tem um problema de negócio que a IA pode resolver? Eu construo a solução e meço se ela funciona.");
 });
+
+test("ferramentas do trabalho mostram a stack completa", async ({ page }) => {
+  await page.goto("/");
+  const chips = await page.locator(".chips--sobrio li").allInnerTexts();
+  for (const f of ["TypeScript", "Reqnroll", "MongoDB", "SQL Server", "Rest Assured", "WireMock", "Postman", "Allure", "Kiro"]) expect(chips).toContain(f);
+});
