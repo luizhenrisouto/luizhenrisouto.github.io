@@ -3,10 +3,12 @@
 name = "triagem-ao-vivo"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
+workers_dev = true
+preview_urls = false
 
 [vars]
 ORIGENS = "https://luizhenrisouto.github.io,http://127.0.0.1:4180"
 
 [[kv_namespaces]]
 binding = "LIMITES"
-id = "PREENCHER_NO_DEPLOY"
+id = "0a583c6f210949d39e510c7e2d9e2000"

@@ -178,6 +178,7 @@ test.describe("laboratório: análise ao vivo", () => {
 });
 
 test("sem o endereço do servidor configurado, a análise ao vivo fica desligada e nada é enviado", async ({ page }) => {
+  await page.addInitScript(() => { window.__labUrl = ""; });
   const chamadas = [];
   page.on("request", (r) => { if (r.url().includes("workers.dev")) chamadas.push(r.url()); });
   await page.goto("/");

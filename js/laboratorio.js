@@ -5,7 +5,7 @@
 import { formatarNumero } from "./dados.js";
 
 // Preenchida no deploy do Worker (worker/README.md). Vazia = análise ao vivo desligada (nada é enviado a lugar nenhum).
-export const URL_TRIAGEM_VIVO = "";
+export const URL_TRIAGEM_VIVO = "https://triagem-ao-vivo.luizhenrisouto.workers.dev/triagem";
 const urlVivo = () => globalThis.__labUrl ?? URL_TRIAGEM_VIVO;
 const MIN_ERRO = 20;
 const MAX_ERRO = 4000;

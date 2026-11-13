@@ -90,4 +90,38 @@ describe("chamarGemini", () => {
     expect(op.headers["x-goog-api-key"]).toBe("CHAVE-SECRETA");
     expect(op.method).toBe("POST");
   });
+
+  test("em erro do Gemini, registra só o código e o status do Google, nunca o pedido", async () => {
+    const avisos = [];
+    const original = console.warn;
+    console.warn = (...a) => avisos.push(a.join(" "));
+    try {
+      const corpo = { error: { code: 400, status: "INVALID_ARGUMENT", message: "API key not valid. Please pass a valid API key." } };
+      const buscar = async () => new Response(JSON.stringify(corpo), { status: 400 });
+      const p = montarPedido({ erro: "TEXTO-DO-VISITANTE-SECRETO com mais de vinte", lingua: "pt" });
+      expect(await chamarGemini({ chave: "CHAVE", pedido: p, buscar, limiteMs: 1000 })).toEqual({ erro: "ia_indisponivel" });
+    } finally {
+      console.warn = original;
+    }
+    expect(avisos).toEqual(["gemini: HTTP 400 INVALID_ARGUMENT"]);
+    expect(avisos.join(" ")).not.toMatch(/TEXTO-DO-VISITANTE|CHAVE|API key/);
+  });
+
+  test("Gemini sobrecarregado (503/429/500) é tentado de novo até 2 vezes", async () => {
+    const ok = JSON.stringify({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: JSON.stringify(TRIAGEM) }] } }] });
+    let n = 0;
+    const buscar = async () => (++n < 3 ? new Response('{"error":{"status":"UNAVAILABLE"}}', { status: 503 }) : new Response(ok));
+    const p = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "pt" });
+    const r = await chamarGemini({ chave: "k", pedido: p, buscar, limiteMs: 5000, esperaMs: 1 });
+    expect(r).toEqual({ triagem: TRIAGEM });
+    expect(n).toBe(3);
+  });
+
+  test("erro que não adianta repetir (400) não é tentado de novo", async () => {
+    let n = 0;
+    const buscar = async () => { n++; return new Response('{"error":{"status":"INVALID_ARGUMENT"}}', { status: 400 }); };
+    const p = montarPedido({ erro: "Error: expected 1 to be 2 em algum teste", lingua: "pt" });
+    expect(await chamarGemini({ chave: "k", pedido: p, buscar, limiteMs: 5000, esperaMs: 1 })).toEqual({ erro: "ia_indisponivel" });
+    expect(n).toBe(1);
+  });
 });
