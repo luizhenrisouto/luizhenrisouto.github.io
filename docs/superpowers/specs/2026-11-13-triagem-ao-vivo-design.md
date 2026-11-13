@@ -97,7 +97,7 @@ Descartadas também: o servidor da Mater (Supabase), para não misturar com a cl
   - mais uma de bug do produto, por ser a mais comum.
 
   O texto de cada uma vem do relatório público da triagem (mensagem de erro e stack), editado só para caber.
-- Um script (`scripts/gerar-exemplos-triagem.mjs`) chama o Worker publicado para os 4 exemplos e grava `dados/exemplos-triagem.json` com:
+- Um script (`scripts/gerar-exemplos-triagem.mjs`) gera as respostas dos 4 exemplos (ver a decisão 2) e grava `dados/exemplos-triagem.json` com:
   - o texto da falha;
   - a categoria do gabarito;
   - a resposta da IA;
@@ -142,6 +142,22 @@ Descartadas também: o servidor da Mater (Supabase), para não misturar com a cl
   - 360 px sem rolagem lateral;
   - movimento reduzido;
   - termos vetados.
+
+## Decisões tomadas na revisão (do autor do desenho; o usuário confere)
+
+1. **Acerto mostrado ao lado:** o `acertoMedioPct` do `indice.json` **publicado** (nunca a cópia local, que tem dados de teste). Em 13/11/2026, as 6 execuções publicadas usam `gemini-3.5-flash-lite`, o mesmo modelo do Worker, com 100% de acerto em 24 falhas.
+   - Como o CI recebe mais contexto do que o Worker (print da tela e se passou numa nova tentativa), o rótulo diz isso: **"Acerto da mesma IA na triagem do CI, que também recebe o print da tela: N% em M falhas · suíte de demonstração com gabarito"**.
+   - Se um dia o CI trocar de modelo, o rótulo mostra o modelo da execução mais recente.
+   - Reaproveita `lerTriagem` e a reserva que o site já tem.
+2. **Exemplos nas duas línguas:** o script gera a resposta em PT e em EN (8 respostas no total) e grava as duas.
+   - **Ele não passa pelo Worker:** chama o Gemini direto, reaproveitando o mesmo módulo que monta o pedido no Worker, com a chave lida da variável de ambiente `GEMINI_API_KEY` do terminal do usuário. Assim não existe nenhum "furo" no limite do Worker publicado.
+   - Ao trocar de idioma, o exemplo mostra a resposta da outra língua.
+   - O ✓/✗ é calculado por língua.
+3. **Análises restantes:** sem rota extra.
+   - Antes do primeiro uso, a página diz "até 5 análises por dia".
+   - Cada resposta do Worker (sucesso ou erro de limite) traz `restantes`, e a página passa a mostrar "restam N hoje".
+4. **Texto dos exemplos:** vem de uma execução local da suíte de demonstração da triagem (SauceDemo, site público de demonstração; o código dos testes é público). O texto mostrado no exemplo é exatamente o texto enviado à IA para gerar a resposta gravada, e o script grava os dois juntos.
+   - Antes de gravar, o script confere que o texto não tem caminhos da máquina (por exemplo, a pasta do usuário no Windows). Se tiver, troca pelo caminho relativo do repositório.
 
 ## O que fica para quem constrói
 - Os textos finais da interface em PT e EN, dentro das regras acima.
