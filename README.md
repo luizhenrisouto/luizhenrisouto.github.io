@@ -5,6 +5,8 @@ Site pessoal de Luiz Henri Souto, QA Sênior que constrói ferramentas com IA. M
 - **Triagem de falhas de teste com IA**: os números (acerto contra o gabarito, falhas triadas, custo, horas) são lidos ao vivo do [relatório publicado](https://luizhenrisouto.github.io/triagem-de-falhas-ia/). Se a leitura falhar, a página usa `dados/reserva.json` e mostra a data dos dados.
 - **Site de pedidos e painel de gestão · Mater Bakery Box**: os números ficam em `dados/projetos.json`. A economia de ~4 h/semana é uma estimativa da proprietária (~30 min por pedido × 8 pedidos/semana) e aparece sempre com esse rótulo.
 
+- **Laboratório (triagem ao vivo)**: o visitante clica num exemplo ou cola o erro de um teste, e a IA diz se é bug do produto, teste instável ou teste quebrado. Os exemplos vêm pré-calculados em `dados/exemplos-triagem.json`; o texto colado vai a um Cloudflare Worker (`worker/`) que chama o Gemini com limite de uso. Publicação do Worker: [worker/README.md](worker/README.md).
+
 ## Como funciona
 
 HTML, CSS e JavaScript puros, sem build. Para publicar, basta servir a pasta como arquivos estáticos (GitHub Pages).
