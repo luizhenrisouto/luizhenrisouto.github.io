@@ -1,7 +1,7 @@
 // Liga os dados da triagem (ao vivo ou reserva) e os números dos projetos à página.
 import { lerTriagem, formatarNumero, formatarUsd, formatarData } from "./dados.js";
 import { TEXTOS, aplicarTextos, escolherLingua } from "./i18n.js";
-import { iniciarLaboratorio, trocarLinguaLaboratorio } from "./laboratorio.js";
+import { iniciarLaboratorio, trocarLinguaLaboratorio, mostrarAcerto } from "./laboratorio.js";
 
 /** Escreve os números em todos os [data-num] da página, no formato do idioma. */
 export function pintarNumeros(doc, triagem, projetos, lingua) {
@@ -73,6 +73,7 @@ async function iniciar() {
       fonte.textContent = TEXTOS[estado.lingua][fonte.dataset.i18n];
     }
     pintarNumeros(document, estado.triagem, estado.projetos, estado.lingua);
+    mostrarAcerto(document, estado.triagem, estado.lingua);
   } catch {
     // sem os arquivos locais, os valores escritos no HTML continuam valendo
   }
