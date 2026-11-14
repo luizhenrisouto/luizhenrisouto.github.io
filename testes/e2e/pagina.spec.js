@@ -75,10 +75,11 @@ test("experiência em casos, por importância, sem anos", async ({ page }) => {
   const secao = page.locator("#trajetoria");
   expect(await secao.innerText()).not.toMatch(/\b(19|20)\d{2}\b/);
   const casos = secao.locator(".caso");
-  await expect(casos).toHaveCount(5);
+  await expect(casos).toHaveCount(6);
   await expect(casos.first()).toHaveClass(/caso--destaque/);
-  await expect(casos.first()).toContainText("Operadora de saúde");
-  await expect(casos.first()).toContainText("atual");
+  await expect(casos.first()).toContainText("Unimed Porto Alegre");
+  await expect(casos.first()).not.toContainText("atual");
+  for (const empresa of ["Renner", "Getnet", "MAG Seguros", "Via Varejo", "ONS"]) await expect(secao).toContainText(empresa);
   await expect(secao.locator(".casos__rodape")).toHaveCount(0);
 });
 
@@ -93,5 +94,5 @@ test("brilho segue o mouse dentro dos cartões", async ({ page }) => {
   const mx = await cartao.evaluate((e) => e.style.getPropertyValue("--mx"));
   expect(mx).toBe("60px");
   const casos = await page.locator("#trajetoria .caso.brilho").count();
-  expect(casos).toBe(5);
+  expect(casos).toBe(await page.locator("#trajetoria .caso").count());
 });
