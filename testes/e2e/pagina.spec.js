@@ -104,8 +104,8 @@ test("prévia de compartilhamento: título, descrição e imagem para LinkedIn e
   expect(await meta('property="og:description"')).toMatch(/triagem de falhas de teste com IA/);
   expect(await meta('property="og:url"')).toBe("https://luizhenrisouto.github.io/");
   expect(await meta('property="og:image"')).toBe("https://luizhenrisouto.github.io/img/previa.png");
-  expect(await meta('property="og:image:width"')).toBe("1200");
-  expect(await meta('property="og:image:height"')).toBe("630");
+  expect(await meta('property="og:image:width"')).toBe("2400");
+  expect(await meta('property="og:image:height"')).toBe("1260");
   expect(await meta('name="twitter:card"')).toBe("summary_large_image");
   const img = await request.get("/img/previa.png");
   expect(img.status()).toBe(200);
