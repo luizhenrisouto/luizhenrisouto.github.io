@@ -96,3 +96,40 @@ test("brilho segue o mouse dentro dos cartões", async ({ page }) => {
   const casos = await page.locator("#trajetoria .caso.brilho").count();
   expect(casos).toBe(await page.locator("#trajetoria .caso").count());
 });
+
+test("prévia de compartilhamento: título, descrição e imagem para LinkedIn e WhatsApp", async ({ page, request }) => {
+  await page.goto("/");
+  const meta = (sel) => page.locator(`head meta[${sel}]`).getAttribute("content");
+  expect(await meta('property="og:title"')).toBe("Luiz Henri Souto · Do teste ao produto. Agora com IA.");
+  expect(await meta('property="og:description"')).toMatch(/triagem de falhas de teste com IA/);
+  expect(await meta('property="og:url"')).toBe("https://luizhenrisouto.github.io/");
+  expect(await meta('property="og:image"')).toBe("https://luizhenrisouto.github.io/img/previa.png");
+  expect(await meta('property="og:image:width"')).toBe("1200");
+  expect(await meta('property="og:image:height"')).toBe("630");
+  expect(await meta('name="twitter:card"')).toBe("summary_large_image");
+  const img = await request.get("/img/previa.png");
+  expect(img.status()).toBe(200);
+  expect(img.headers()["content-type"]).toMatch(/image\/png/);
+});
+
+test("o título do topo quebra depois da primeira frase, em português e em inglês", async ({ page }) => {
+  const linhas = () =>
+    page.locator("h1").evaluate((h) => {
+      const t = h.textContent, porLinha = {};
+      for (let i = 0; i < t.length; i++) {
+        const r = document.createRange(); r.setStart(h.firstChild, i); r.setEnd(h.firstChild, i + 1);
+        const y = Math.round(r.getBoundingClientRect().top);
+        porLinha[y] = (porLinha[y] ?? "") + t[i];
+      }
+      return Object.values(porLinha).map((l) => l.trim());
+    });
+  for (const largura of [1024, 1366, 1920]) {
+    await page.setViewportSize({ width: largura, height: 800 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    await page.getByRole("button", { name: "PT", exact: true }).click(); // a escolha de idioma fica salva entre as páginas
+    expect(await linhas(), `pt ${largura}`).toEqual(["Do teste ao produto.", "Agora com IA."]);
+    await page.getByRole("button", { name: "EN", exact: true }).click();
+    expect(await linhas(), `en ${largura}`).toEqual(["From testing to product.", "Now with AI."]);
+  }
+});

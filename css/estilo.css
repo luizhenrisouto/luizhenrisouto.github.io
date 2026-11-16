@@ -61,7 +61,7 @@ a { color: inherit; }
   box-shadow: 0 0 0 0 rgb(61 220 151 / .6); animation: pulsa 2.4s infinite;
 }
 .topo__nome { color: var(--acento); font-size: 14px; margin: 0 0 12px; }
-h1 { font-size: clamp(2.3rem, 5.6vw, 4.2rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; margin: 0 0 18px; max-width: 18ch; }
+h1 { font-size: clamp(2.3rem, 5.6vw, 4.2rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; margin: 0 0 18px; max-width: 17ch; }
 .topo__apoio { color: var(--mudo); font-size: 1.15rem; max-width: 52ch; margin: 0 0 44px; }
 
 /* Pipeline (topo e mini) */
